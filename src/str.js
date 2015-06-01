@@ -331,7 +331,7 @@ Sk.builtin.str.prototype["split"] = new Sk.builtin.func(function (self, on, howm
     regex = /[\s]+/g;
     str = self.v;
     if (on === null) {
-        str = str.trimLeft();
+        str = goog.string.trimLeft(str);
     } else {
         // Escape special characters in "on" so we can use a regexp
         s = on.v.replace(/([.*+?=|\\\/()\[\]\{\}^$])/g, "\\$1");
@@ -1129,7 +1129,15 @@ Sk.builtin.str.prototype.nb$remainder = function (rhs) {
                     precision = 7;
                 }
             }
-            result = (convValue)[convName](precision);
+            result = (convValue)[convName](precision); // possible loose of negative zero sign
+            
+            // apply sign to negative zeros, floats only!
+            if(Sk.builtin.checkFloat(value)) {
+                if(convValue === 0 && 1/convValue === -Infinity) {
+                    result = "-" + result; // add sign for zero
+                }
+            }
+
             if ("EFG".indexOf(conversionType) !== -1) {
                 result = result.toUpperCase();
             }
