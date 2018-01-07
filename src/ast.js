@@ -1654,7 +1654,10 @@ function parsestr (c, s) {
             if (c === "\\") {
                 ++i;
                 c = s.charAt(i);
-                if (c === "n") {
+                if (c === "a") {
+                    ret += "\x07";
+                }
+                else if (c === "n") {
                     ret += "\n";
                 }
                 else if (c === "\\") {
@@ -1697,6 +1700,18 @@ function parsestr (c, s) {
                     d2 = s.charAt(++i);
                     d3 = s.charAt(++i);
                     ret += String.fromCharCode(parseInt(d0 + d1, 16), parseInt(d2 + d3, 16));
+                }
+                else if (parseInt(c, 8) < 8) {
+                    d0 = c;
+                    d1 = "";
+                    d2 = "";
+                    if (i < len  && parseInt(s.charAt(i+1), 8) < 8) {
+                        d1 = s.charAt(++i);
+                    };
+                    if (i < len  && parseInt(s.charAt(i+1), 8) < 8) {
+                        d2 = s.charAt(++i);
+                    };
+                    ret += String.fromCharCode(parseInt(d0 + d1 + d2, 8));
                 }
                 else {
                     // Leave it alone

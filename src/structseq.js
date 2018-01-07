@@ -66,9 +66,9 @@ Sk.builtin.make_structseq = function (module, name, fields, doc) {
     cons.prototype.__getitem__ = new Sk.builtin.func(function (self, index) {
         return Sk.builtin.tuple.prototype.mp$subscript.call(self, index);
     });
-    cons.prototype.__reduce__ = new Sk.builtin.func(function (self) {
-        return new Sk.builtin.str("oh no");
-    });
+    //cons.prototype.__reduce__ = new Sk.builtin.func(function (self) {
+    //    to do;
+    //});
 
     function makeGetter(i, doc, tp) {
         var x = i;
